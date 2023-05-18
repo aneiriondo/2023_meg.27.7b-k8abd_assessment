@@ -126,19 +126,17 @@ plot(stks) + facet_wrap(~qname,scales='free_y')
 SavePlot('summary0')
 
 
-
-
+#==============================================================================
+# PROJECTIONS: GEOMETRIC MEAN AND F SCALED OR UNSCALED
+#==============================================================================
 
 #summary table for the report 
 
 years <- stk1@range[4]:stk1@range[5]
 nyears <- length(years)
-GM <- round(exp(mean(log(c(stk1@stock.n[1,1:(nyears-2)])))),0)/1000 
+GM <- round(exp(mean(log(c(stk1@stock.n[1,1:(nyears-2)])))),0)/1000 #Geometric mean of recruitment (1984-2 last years); thousands.
 GM
 
-#==============================================================================
-# PROJECTIONS: F SCALED OR UNSCALED
-#==============================================================================
 
 fsq <- fsq <- mean(fbar(stk1)[,nyears-2:0]) #F NOT SCALED (Average F(2020-2022))
 #fsq <- fsq <- fbar(stk1)[,nyears]  #F SCALED TO THE LAST YEAR
