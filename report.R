@@ -9,21 +9,17 @@ install.packages("ggplotFL", repos="http://flr-project.org/R")
 install.packages(c("copula","triangle", "coda"))
 install.packages("FLEDA", repos="http://flr-project.org/R")
 install.packages("FLFishery", repos="http://flr-project.org/R")
-
 install.packages(c("FLa4a", "FLasher", "ggplotFL"), repos="https://flr-project.org/R")
 install.packages(c("ggplot2", "snpar", "foreach", "data.table"))
 devtools::install_github("flr/a4adiags")
 
-
-
-
 library(icesTAF)
 
-
-###REPORT SECTION
+#==============================================================================
+# REPORT SECTION
+#==============================================================================
 
 mkdir("report")
-
 
 # load fit, index and stock
 
@@ -31,7 +27,6 @@ mkdir("report")
 
 # load retro run
 #load("model/MegRetroFit_FINAL.Rdata")
-
 
 stk1 <- stock + fit1
 plot(stk1)
@@ -41,8 +36,7 @@ AIC(fit1)
 BIC(fit1)
 
 
-
-# hacked function from a4aFitresiduals-class
+# hacked function from a4a Fitresiduals-class
 plotr <- function(x, y=missing, auxline="smooth",...){
   args <- list()
   args$data <- as.data.frame(x)
@@ -135,14 +129,16 @@ SavePlot('summary0')
 
 
 
-#summary table for the report (AI: input for the projections accepted WGBIE2020: F NOT SCALED (Average F(2017-2019)), R geometric mean (1984:2017))
+#summary table for the report 
 
 years <- stk1@range[4]:stk1@range[5]
 nyears <- length(years)
-GM <- round(exp(mean(log(c(stk1@stock.n[1,1:(nyears-2)])))),0)/1000 #Geometric mean of recruitment (1984-2017); thousands.
+GM <- round(exp(mean(log(c(stk1@stock.n[1,1:(nyears-2)])))),0)/1000 
 GM
 
-#PROJECTIONS: F SCALED OR UNSCALED
+#==============================================================================
+# PROJECTIONS: F SCALED OR UNSCALED
+#==============================================================================
 
 fsq <- fsq <- mean(fbar(stk1)[,nyears-2:0]) #F NOT SCALED (Average F(2020-2022))
 #fsq <- fsq <- fbar(stk1)[,nyears]  #F SCALED TO THE LAST YEAR
@@ -178,7 +174,6 @@ recr <- stk1@stock.n[1,]
 recr2sd <- 2*apply(stks@stock.n[1,],2,sd)
 fbar <- fbar(stk1)
 fbar2sd <- 2*apply(fbar(stks),2,sd)
-
 
 
 sum1 <-
@@ -230,7 +225,6 @@ knitr::kable(sum2,row.names=F,digits=c(rep(0,16),rep(3,3)))
 write.csv(sum2,'report/Summary_2_1sd.csv', row.names=F)
 
 
-
 #summary for standard graphs template with coeficient interval of 2sd
 sum3 <- data.frame(year=c(years,max(years+1))
                    ,recrlo=c(recr-recr2sd,NA)
@@ -276,7 +270,6 @@ sen <- data.frame(
 )
 knitr::kable(sen, row.names = F, digits = c(0, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3))
 write.csv(sen, "report/Sen.csv", row.names = F)
-
 
 
 plot(fit1, stock)
