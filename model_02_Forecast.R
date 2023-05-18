@@ -15,7 +15,6 @@ install.packages(c("ggplot2", "snpar", "foreach", "data.table"))
 devtools::install_github("flr/a4adiags")
 
 
-
 library(FLCore)
 library(icesTAF)
 library(ggplot2)
@@ -36,7 +35,7 @@ mkdir("model")
 # Load assessment
 
 load('Refpoints_WKMEGRIM_megrim78/Megrim_2020_EqSim_Workspace.RData')
-#AI: importante cargar primero el archivo de Refpoints y luego el Fit, porque en este ultimo tenemos todos los aÒos del assessment.
+#AI: importante cargar primero el archivo de Refpoints y luego el Fit, porque en este ultimo tenemos todos los a√±os del assessment.
 
 load('model/MegFit_FINAL.RData')
 
@@ -57,11 +56,10 @@ fy <- ay + 1
 
 # TAC & advice current year
 
-#advice <- FLQuant(19184, dimnames=list(age='all', year=ay), units="tonnes")  aqui se pondrÌa el consejo para el aÒo del grupo de trabajo es decir, en WGBIE 2022 hay que poner el consejo para el 2022. 
+#advice <- FLQuant(19184, dimnames=list(age='all', year=ay), units="tonnes")  aqui se pondr√≠a el consejo para el a√±o del grupo de trabajo es decir, en WGBIE 2022 hay que poner el consejo para el 2022. 
 
-advice <- FLQuant(23596, dimnames=list(age='all', year=ay), units="tonnes") #en WGBIE 2023, advice para el aÒo 2023 son 23596 tn.
+advice <- FLQuant(23596, dimnames=list(age='all', year=ay), units="tonnes") #en WGBIE 2023, advice para el a√±o 2023 son 23596 tn.
 tac <- advice
-
 
 
 # GEOMEAN but last year
@@ -70,14 +68,14 @@ tac <- advice
 # GEOMEAN for all years minus last 2
 rec1gm <- exp(mean(log(window(stock.n(run)["1",], end=-2))))
 
-# GEOMEAN for years 1984:2018. AI: used in WGGBIE 2021 (GEOMEAN for all years minus last 2) # AI: distintas formas de obtener "rec1gm" en el primero por defecto, en este hay que modificar el aÒo manualmente.
+# GEOMEAN for years 1984:2018. AI: used in WGGBIE 2021 (GEOMEAN for all years minus last 2) # AI: distintas formas de obtener "rec1gm" en el primero por defecto, en este hay que modificar el a√±o manualmente.
 rec1gm <- exp(mean(log(window(stock.n(run)["1",], start=1984, end=2020))))
 
 #################
-# GEOMEAN: para cambiar el reclutamiento del ˙ltimo aÒo del assessment por geomean si consideramos que tenemos mucha incertidumbre.
+# GEOMEAN: para cambiar el reclutamiento del √∫ltimo a√±o del assessment por geomean si consideramos que tenemos mucha incertidumbre.
 
 #plot(run@stock.n['1',])
-#run@stock.n['1','2022'] <- rec1gm #AI: oara la evaluciÛn con datos hasta 2022.
+#run@stock.n['1','2022'] <- rec1gm #AI: oara la evaluci√≥n con datos hasta 2022.
 
 
 
@@ -103,7 +101,7 @@ Fsq <- expand(yearMeans(fbar(fut)[, ac(seq(dy - 2, dy))]), year=2023) #F NOT SCA
 gmsrr <- predictModel(model=rec~a, params=FLPar(c(rec1gm), units="thousands",
   dimnames=list(params="a", year=seq(ay, length=3), iter=1)))
 
-# > gmsrr   # AI: reemplaza el reclutamiento con rec1gm del aÒo intermedio (2023) y los dos siguientes.
+# > gmsrr   # AI: reemplaza el reclutamiento con rec1gm del a√±o intermedio (2023) y los dos siguientes.
 # An object of class "FLQuants": EMPTY
 # model:  
 #   rec ~ a
@@ -148,7 +146,7 @@ catch(runs$Fmsy)[, '2023']
 landings(runs$Fmsy)[, '2023']
 discards(runs$Fmsy)[, '2023']
 
-#Otro forma de obtener los valores de los aÒos intermedios:
+#Otro forma de obtener los valores de los a√±os intermedios:
 
 # as.numeric(catch(runs[[1]])[,as.character(ay)])
 # #[1] 19993.89
@@ -160,7 +158,7 @@ discards(runs$Fmsy)[, '2023']
 # #[1] 2870.042
 
 
-ssb(runs$Fmsy)[, '2023'] # La SSB del aÒo intermedio (2023) hay que incluirla en la tabla del advice donde se da la summary table pero este ultimo aÒo no hay valor (NA).
+ssb(runs$Fmsy)[, '2023'] # La SSB del a√±o intermedio (2023) hay que incluirla en la tabla del advice donde se da la summary table pero este ultimo a√±o no hay valor (NA).
 #95559
 
 ###############################################################################
