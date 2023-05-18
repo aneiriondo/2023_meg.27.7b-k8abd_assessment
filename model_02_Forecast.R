@@ -26,9 +26,6 @@ library (a4adiags)
 
 getwd()
 
-setwd("~/GRUPOS DE TRABAJO/WGBIE_2023/2.Assessment_mgw78_WGBIE23")
-
-
 mkdir("model")
 
 # Load assessment
