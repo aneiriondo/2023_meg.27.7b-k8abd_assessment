@@ -22,12 +22,8 @@ SavePlot <- function(plotname, width = 10, height = 7) {
   dev.print(png, file, width = width, height = height, units = "in", res = 300)
 }
 
-
-
-
 ## ---------------------------------------------------------------------------------------------------------------------------------
 ages <- stock@range["min"]:stock@range["max"]
-
 
 ## ---------------------------------------------------------------------------------------------------------------------------------
 stock <- setPlusGroup(stock, 10)
@@ -74,7 +70,6 @@ for (i in 1:5) {
   write.table(fun(index(tun.sel[[i]]), 3), filename, append = T, quote = F, sep = ",", na = "", row.names = T, col.names = T)
 }
 
-
 ## ---------------------------------------------------------------------------------------------------------------------------------
 LA <- as.data.frame(stock@landings.n)
 DI <- as.data.frame(stock@discards.n)
@@ -90,7 +85,6 @@ LA$unit <- "1. landings"
 DI$unit <- "2. discards"
 barchart(data / 1000 ~ as.factor(age) | as.factor(year), groups = unit, data = na.omit(rbind(LA, DI)), stack = T, as.table = T, ylab = "Catch wts (kT)", col = c("grey", "white"), xlab = "age", par.strip.text = list(cex = 0.8))
 SavePlot("cnaa2", 10, 5)
-
 
 ## ---------------------------------------------------------------------------------------------------------------------------------
 pfun <- function(x, y, groups, subscripts, ...) {
@@ -122,7 +116,6 @@ bubbles(age ~ year, b, bub.scale = 5, bub.col = c("#00000050", "#FFFFFF50"), mai
 
 SavePlot("bubbles3")
 
-
 ## ---------------------------------------------------------------------------------------------------------------------------------
 a <- ccplot(data ~ age, logcc(catch.n(stock)), type = "b", col = "#00000050", ylab = "log ratio", pch = 16, cex = 0.5)
 x1 <- logcc(catch.n(stock))
@@ -134,11 +127,9 @@ b <- ccplot(data ~ year, logcc(catch.n(stock)), type = "l", col = 1, ylab = "log
 grid.arrange(a, b, ncol = 2)
 SavePlot("logratio")
 
-
 ## ---------------------------------------------------------------------------------------------------------------------------------
 xyplot(log(data) ~ year, groups = year - age, data = stock@catch.n, type = "l", ylab = "log indices", col = 1)
 SavePlot("cc")
-
 
 ## ----warning=F--------------------------------------------------------------------------------------------------------------------
 a <- xyplot(data ~ year, z(stock@catch.n, agerng = 3:6)@zy, type = "l", ylab = "mean Z age 3-6", main = "Catch")
@@ -146,7 +137,6 @@ x <- stock@catch.n
 x[x == 0] <- 1
 b <- xyplot(data ~ age, z(x, agerng = 3:6)@za, type = "l", ylab = "mean Z", main = "Catch")
 grid.arrange(a, b, ncol = 2)
-
 
 ## ---------------------------------------------------------------------------------------------------------------------------------
 x <- trim(index(tun.sel[[1]]), age = 1:5)
@@ -156,7 +146,6 @@ sp[is.na(sp)] <- 0
 bubbles(age ~ year, sp, bub.scale = 10, bub.col = c("#00000050", "#FFFFFF50"), main = tun.sel[[1]]@name)
 SavePlot("bubbles_tun_EVHOE")
 
-
 ## ---------------------------------------------------------------------------------------------------------------------------------
 x <- index(tun.sel[[2]])
 x[is.na(x)] <- 0
@@ -165,13 +154,11 @@ sp[is.na(sp)] <- 0
 bubbles(age ~ year, sp, bub.scale = 6, bub.col = c("#00000050", "#FFFFFF50"), main = tun.sel[[2]]@name)
 SavePlot("bubbles_tun_PORCU")
 
-
 ## ---------------------------------------------------------------------------------------------------------------------------------
 x <- index(tun.sel[[3]])
 x[is.na(x)] <- 0
 bubbles(age ~ year, spay(x), bub.scale = 10, bub.col = c("#00000050", "#FFFFFF50"), main = tun.sel[[3]]@name)
 SavePlot("bubbles_tun_vigo84")
-
 
 ## ---------------------------------------------------------------------------------------------------------------------------------
 x <- index(tun.sel[[4]])
@@ -179,13 +166,11 @@ x[is.na(x)] <- 0
 bubbles(age ~ year, spay(x), bub.scale = 10, bub.col = c("#00000050", "#FFFFFF50"), main = tun.sel[[4]]@name)
 SavePlot("bubbles_tun_vigo99")
 
-
 ## ---------------------------------------------------------------------------------------------------------------------------------
 x <- index(tun.sel[[5]])
 x[is.na(x)] <- 0
 bubbles(age ~ year, spay(x), bub.scale = 10, bub.col = c("#00000050", "#FFFFFF50"), main = tun.sel[[5]]@name)
 SavePlot("bubbles_tun_IRTBB")
-
 
 ## ---------------------------------------------------------------------------------------------------------------------------------
 # temp function to standardise indices
@@ -212,12 +197,9 @@ akey <- list(points = F, lines = T, columns = 1, cex = 0.8, space = "right")
 xyplot(data ~ (year - as.numeric(as.character(age))) | qname, groups = age, data = inds2, type = "b", auto.key = akey, as.table = T, xlab = "Cohort", ylab = "standardised CPUE")
 SavePlot("tun_consist2", 10.5)
 
-
 ## ----warning=F--------------------------------------------------------------------------------------------------------------------
 xyplot(data ~ year | factor(age), groups = qname, data = inds2, type = "b", auto.key = akey, as.table = T, ylab = "standardised CPUE")
 SavePlot("tun_consist3", 10, 5)
-
-
 
 ## ----warning=F,fig.keep='last'----------------------------------------------------------------------------------------------------
 # a <- plot(tun[[1]])
@@ -246,7 +228,6 @@ b <- plot(tun.sel[[4]])
 b <- plot(tun.sel[[5]])
 # grid.arrange(a,b,ncol=2)
 
-
 ## ---------------------------------------------------------------------------------------------------------------------------------
 cc <- as.data.frame(lapply(FLIndices(tun.sel[[1]], tun.sel[[2]], tun.sel[[3]], tun.sel[[4]], tun.sel[[5]]), function(x) logcc(index(x))))
 xyplot(data ~ age | cname, groups = cohort, data = cc, type = "b", col = 1, ylab = "log ratio")
@@ -254,13 +235,11 @@ xyplot(data ~ age | cname, groups = cohort, data = cc, type = "b", col = 1, ylab
 SavePlot("tun_logratio")
 
 
-
 ## ----warning=F--------------------------------------------------------------------------------------------------------------------
 tun.ind <- as.data.frame(lapply(tun.sel, index))
 tun.ind$yearclass <- as.numeric(as.character(tun.ind$year)) - as.numeric(as.character(tun.ind$age))
 xyplot(log(data) ~ year | qname, groups = yearclass, data = tun.ind, scales = list(y = "free"), type = "l", ylab = "log indices", col = 1)
 SavePlot("tun_cc")
-
 
 
 ## ---------------------------------------------------------------------------------------------------------------------------------
