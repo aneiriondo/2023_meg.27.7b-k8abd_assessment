@@ -32,8 +32,8 @@ library(devtools)
 library(ggplot2)
 
 
-
-
+#2023_meg.27.7b-k8abd_assessment
+#a4a model assessment model
 
 #  #TO WORK from TAF
 # # 
@@ -43,20 +43,10 @@ taf.bootstrap()
 load(taf.data.path("stock", "meg78_stock.RData"))
 load(taf.data.path("indices", "meg78_indices.RData"))
 # 
-
-#  #TO WORK from MY PC
-# 
-# setwd("~/GRUPOS DE TRABAJO/WGBIE_2023/2.Assessment_mgw78_WGBIE23")
-# #
-# #
-# load("bootstrap/data/stock/meg78_stock.RData")
-# load("bootstrap/data/indices/meg78_indices.RData")
-
 mkdir("model")
 
-
 # specify submodels defined as follows:
-
+#==============================================================================
 #FIT: ONLY SURVEYS
 
 tun.sel2<- tun.sel[c("SP_PORC","CPUE.IRLFRsurvey")]
@@ -67,29 +57,23 @@ tun.sel2[[2]]@index['1','2011'] <- NA
 
 #we do not really believe that the increase in 1-year-olds in the catch is real so we shouldn't formulate a model that treats it as real. I think the better approach is to 1984:
 
-
 plot(stock@catch.n['1',])
 stock@catch.n['1',as.character(1984:2000)] <- NA
 
 # Also deal with  pretty flat after age 7 so reduce the age where they are 'bound'
-
-
 
 qmod <- list(~ I(1 / (1 + exp(-age))),~ I(1 / (1 + exp(-age))))
 srmod <- ~ factor(year) 
 
 fmod <- ~ factor(replace(age,age>7,7)) + factor(year)
 
-
 fit1 <- sca(stock, tun.sel2, fmodel = fmod, qmodel = qmod, srmodel = srmod)
 
 stk1 <- stock + fit1
 
-
 tun.sel2
 
-################################################
-
+#==============================================================================
 
 #FIT 1: FIT FINAL
 
@@ -97,14 +81,11 @@ stk1 <- stock + fit1
 
 plot(stk1)
 
-
-
 # utilities
 SavePlot <- function(plotname, width = 10, height = 7) {
   file <- file.path("report", paste0("meg78_data_", plotname, ".png"))
   dev.print(png, file, width = width, height = height, units = "in", res = 600)
 }
-
 
 save(stk1,stock, tun.sel2, fit1, file = "model/MegFit_FINAL.Rdata")
 
@@ -121,17 +102,17 @@ submodels(fit1)
 # SP_PORC:          ~1
 # CPUE.IRLFRsurvey: ~1
 
-
 name(stk1) <- 'Run1'
 
 AIC(fit1)
 
 BIC(fit1)
 
-
 idx<-tun.sel2
 
-
+#==============================================================================
+# RETRO
+#==============================================================================
 
 #retro without smoothers-> 
 back <- 5
@@ -155,8 +136,9 @@ save(retro, file = "model/MegRetroFit_FINAL.Rdata")
 
 SavePlot('Retro_Fit_FINAL')
 
-
-####Retro value calculation
+#==============================================================================
+# Retro value calculation
+#==============================================================================
 
 Retro_F <- data.frame(Y0=c(fbar(retro$`0`))
                       ,Y1=c(fbar(retro$`1`),NA)
@@ -165,7 +147,6 @@ Retro_F <- data.frame(Y0=c(fbar(retro$`0`))
                       ,Y4=c(fbar(retro$`4`),NA,NA,NA,NA)                
                       ,Y5=c(fbar(retro$`5`),NA,NA,NA,NA,NA)
 )
-
 
 mohn(Retro_F,details=T) 
 mohn(Retro_F,plot=T) 
@@ -214,11 +195,9 @@ for(i in 1:5) lines(years[1:(nyears-i)],ssb(retro[[i]])/1000,lwd=1,col=pal[i])
 lines(years,ssb,lwd=2,col=4)
 
 
-
 mohn(Retro_SSB) 
 mohn(Retro_SSB,details=T) 
 mohn(Retro_SSB,plot=T) 
-
 
 
 recr <- function(x) x@stock.n[1,]
@@ -236,8 +215,4 @@ mohn(Retro_R,plot=T)
 
 AIC(fit1)
 BIC(fit1)
-
-
-
-
 
