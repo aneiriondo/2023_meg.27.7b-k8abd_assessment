@@ -25,12 +25,15 @@ library(FLa4a)
 library (a4adiags)
 detach("package:tidyr", unload = TRUE)# to verify it is not loaded.
 
+
 getwd()
 
-<<<<<<< Updated upstream
-=======
+#  #TO WORK from TAF
+# # 
+taf.bootstrap()
+# # # load index and stock
 
->>>>>>> Stashed changes
+
 mkdir("model")
 
 # Load assessment

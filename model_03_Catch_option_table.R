@@ -9,17 +9,21 @@
 
 ### Clean slate
 rm(list=ls())
-#path <- ("D:/ICES benchmarks/2022 WKMEGRIM/RefPts/Meg89/")
-
-path <- ("C:/use/GRUPOS DE TRABAJO/WGBIE_2023/2.Assessment_mgw78_WGBIE23/")
-setwd(path)
 
 library(icesAdvice)
 library(flextable)
 library(data.table)
 library(writexl)
 
-load(paste0(path,"model/runs.RData"))
+#  #TO WORK from TAF
+
+taf.bootstrap()
+# # # load index and stock
+
+load(taf.data.path("stock", "meg78_stock.RData"))
+load(taf.data.path("indices", "meg78_indices.RData"))
+
+load("model/runs.RData")
 
 forecastYr <- range(runs[[1]])["maxyear"]-1
 
@@ -131,6 +135,6 @@ dimnames(tab_options)[[2]] <- c("Basis",
 
 
 writexl::write_xlsx(tab_options,
-                    path=paste0(path,"report/catch_options.xlsx"))
+                    path=paste0("report/catch_options.xlsx"))
 
 
