@@ -13,7 +13,7 @@ install_github("ices-tools-prod/msy")
 install.packages(c("FLa4a", "FLasher", "ggplotFL"), repos="https://flr-project.org/R")
 install.packages(c("ggplot2", "snpar", "foreach", "data.table"))
 devtools::install_github("flr/a4adiags")
-
+detach("package:tidyr", unload = TRUE)
 
 library(FLCore)
 library(icesTAF)
@@ -23,14 +23,19 @@ library(FLFishery)
 library(FLasher)
 library(FLa4a)
 library (a4adiags)
+detach("package:tidyr", unload = TRUE)# to verify it is not loaded.
 
 getwd()
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 mkdir("model")
 
 # Load assessment
 
-load('Refpoints_WKMEGRIM_megrim78/Megrim_2020_EqSim_Workspace.RData')
+load('model/RefPoints.RData')
 #AI: importante cargar primero el archivo de Refpoints y luego el Fit, porque en este ultimo tenemos todos los años del assessment.
 
 load('model/MegFit_FINAL.RData')
@@ -78,7 +83,7 @@ rec1gm <- exp(mean(log(window(stock.n(run)["1",], end=-2))))
 fut <- stf(run, nyears=3, wts.nyears = 5, fbar.nyears=5, disc.nyears=3)  
 
 # GET F status quo (Fsq)
-Fsq <- expand(yearMeans(fbar(fut)[, ac(seq(dy - 2, dy))]), year=2023) #F NOT SCALED (Average F last 3 years)
+Fsq <- FLCore::expand(yearMeans(fbar(fut)[, ac(seq(dy - 2, dy))]), year=2023) #F NOT SCALED (Average F last 3 years)
 #Fsq <- expand(fbar(fut)[, ac(dy)], year=ay) # #F SCALED TO THE LAST YEAR
 
 #######################################################################################
