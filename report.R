@@ -14,6 +14,7 @@ install.packages(c("ggplot2", "snpar", "foreach", "data.table"))
 devtools::install_github("flr/a4adiags")
 
 library(icesTAF)
+library(ggplot2)
 
 #==============================================================================
 # REPORT SECTION
@@ -23,10 +24,11 @@ mkdir("report")
 
 # load fit, index and stock
 
-#load("model/MegFit_FINAL.Rdata")
+load("model/MegFit_FINAL.Rdata")
 
 # load retro run
-#load("model/MegRetroFit_FINAL.Rdata")
+
+load("model/MegRetroFit_FINAL.Rdata")
 
 stk1 <- stock + fit1
 plot(stk1)
@@ -66,12 +68,7 @@ print(plotr(res, auxline = "none"))
 SavePlot('Residuals1',10,6)
 
 res$catch.n[is.na(res$catch.n)] <- 0 #hack
-#res$FR_EVHOE[is.na(res$FR_EVHOE)] <- 0 #hack
 res$SP_PORC[is.na(res$SP_PORC)] <- 0 #hack
-#res$CPUE.Vigo84[is.na(res$CPUE.Vigo84)] <- 0 #hack
-#res$CPUE.Vigo99[is.na(res$CPUE.Vigo99)] <- 0 #hack
-#res$LPUE.ITBB[is.na(res$LPUE.ITBB)] <- 0 #hack
-#res$CPUE.IAM[is.na(res$CPUE.IAM)] <- 0 #hack
 res$CPUE.IRLFRsurvey[is.na(res$CPUE.IRLFRsurvey)] <- 0 #hack
 
 bubbles(res)
@@ -92,18 +89,10 @@ SavePlot('F')
 
 fitted <- predict(pars(fit1))
 
-#a1 <- xyplot(data~age,groups=year,data=fitted$qmodel[1],type='b',ylab='Catchabilty',main='Q FR_EVHOE',ylim=c(0,4e-5))
-#a1
+
 a2 <- xyplot(data~age,groups=year,data=fitted$qmodel[1],type='b',ylab='Catchabilty',main=names(tun.sel2)[1])
 a2
-#a3 <- xyplot(data~age,groups=year,data=fitted$qmodel[3],type='b',ylab='Catchabilty',main='Q CPUE.Vigo84',ylim=c(0,0.005))
-#a3
-#a4 <- xyplot(data~age,groups=year,data=fitted$qmodel[4],type='b',ylab='Catchabilty',main='Q CPUE.Vigo99',ylim=c(0,0.0015))
-#a4
-#a5 <- xyplot(data~age,groups=year,data=fitted$qmodel[5],type='b',ylab='Catchabilty',main='Q LPUE.ITBB',ylim=c(0,0.02))
-#a5
-#a6 <- xyplot(data~age,groups=year,data=fitted$qmodel[6],type='b',ylab='Catchabilty',main='CPUE.IAM',ylim=c(0,0.03))
-#a6
+
 a7 <- xyplot(data~age,groups=year,data=fitted$qmodel[2],type='b',ylab='Catchabilty',main=names(tun.sel2)[2])
 a7
 
@@ -139,7 +128,9 @@ GM
 
 
 fsq <- fsq <- mean(fbar(stk1)[,nyears-2:0]) #F NOT SCALED (Average F(2020-2022))
+fsq
 #fsq <- fsq <- fbar(stk1)[,nyears]  #F SCALED TO THE LAST YEAR
+
 
 # AI: 08/06/2022 in the ADG the 2sd is requested and it is included in all xxse variables for example: tsbse <- 2*apply(tsb(stks),2,sd).
 
