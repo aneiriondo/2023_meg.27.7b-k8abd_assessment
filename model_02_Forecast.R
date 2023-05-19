@@ -67,7 +67,7 @@ rec1gm <- exp(mean(log(window(stock.n(run)["1",], end=-2))))
 #==============================================================================
 # If Needed:
 # GEOMEAN: to change last year recruitment if we consider there is high uncertainty.
-#==============================================================================
+
 #plot(run@stock.n['1',])
 #run@stock.n['1','2022'] <- rec1gm #AI: oara la evalución con datos hasta 2022.
 #==============================================================================
